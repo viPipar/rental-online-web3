@@ -228,70 +228,41 @@ rentown-soroban-contract/
             ├── lib.rs           # 🔑 Main smart contract logic (283 lines)
             └── test.rs          # Unit test stubs
 ```
+</div>
 
 ---
 
-## ⚙️ Local Development
+## Ringkasan Singkat
 
-### Prerequisites
+RentOwn — Decentralized P2P rental built around a Soroban smart contract (deployed on Stellar testnet).
+
+Frontend saat ini: React + Vite full UI, peta (react-leaflet), dan alur sewa end-to-end yang menggunakan sebuah scaffold kontrak mock yang persisten (localStorage). Tujuan: siap diganti ke on-chain Soroban tanpa mengubah UI.
+
+Implementasi utama:
+- Halaman Landing, Owner & Renter dashboards
+- Form listing dengan MapPicker, Item detail modal, dan alur sewa
+- Map markers, popups, dan legend
+- Wallet stub dengan dukungan Freighter (local demo + helper signTransaction)
+- Contract scaffold: `frontend/src/lib/contract.js` (fungsi: getCatalog, listItem, rentItem, getMyListings, getMyRentals)
+- Build optimisasi (`vite.config.js` manualChunks)
+- Responsif dasar dan perbaikan aksesibilitas (ARIA)
+
+Belum terhubung ke on-chain (apa yang perlu dikerjakan):
+- Ganti implementasi `frontend/src/lib/contract.js` menjadi panggilan Soroban client
+- Gunakan `useWallet.signTransaction` untuk menandatangani dan submit transaksi nyata
+- Tambah monitoring transaksi on-chain / notifikasi status
+
+Quickstart (frontend):
+
 ```bash
-rustup target add wasm32-unknown-unknown
-cargo install --locked stellar-cli --features opt
+cd frontend
+npm install
+npm run dev
 ```
 
-### Build Contract
-```bash
-stellar contract build
-```
+Catatan: Data demo disimpan di `localStorage` (kunci: `rentown_items_v1`, `rentown_rentals_v1`).
 
-### Run Tests
-```bash
-cargo test
-```
-
-### Deploy to Testnet
-```bash
-stellar contract deploy \
-  --wasm target/wasm32-unknown-unknown/release/rentown.wasm \
-  --source YOUR_SECRET_KEY \
-  --network testnet
-```
-
----
-
-## 🗺️ Roadmap & Next Steps
-
-### ✅ Phase 1 — Web3 Backend Layer *(COMPLETE)*
-
-- [x] Immutable `Item`, `RentalTx`, `RentalStatus` data structures (Soroban SDK v25 memory-safe patterns)
-- [x] On-chain geolocation storage — lat/lng in Stellar ledger (zero SQL/NoSQL dependency)
-- [x] Automated escrow: rent lock, collateral lock, courier pay, collateral return
-- [x] Multi-party `require_auth()` authorization on all state-mutating functions
-- [x] Live deployment on Stellar Testnet with valid Contract ID
-
-### 🔵 Phase 2 — Frontend Integration Layer *(Next Step)*
-
-- [ ] **Stellar Freighter Wallet** — browser extension integration for Owner, Renter & Courier `Sign Transaction` flows
-- [ ] **Soroban Client SDK Binding** — generate JS/TS bindings from `.wasm` via `stellar contract bindings typescript`
-- [ ] **Google Maps API Integration** — consume `get_catalog()` lat/lng output to render real-time item markers on an interactive map
-- [ ] **Next.js / React Frontend** — responsive web UI for listing, browsing, renting, and tracking
-
-### 🟣 Phase 3 — Production Hardening *(Future)*
-
-- [ ] Migrate from `instance` to `persistent` storage for large catalogs
-- [ ] Time-locked rental expiry via Soroban ledger timestamps
-- [ ] Dispute resolution mechanism
-- [ ] Mainnet deployment
-
----
-
-## 📜 License
-
-This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
-
----
-
-<div align="center">
+Jika ingin, saya dapat langsung mengerjakan: (A) integrasi Soroban client, atau (B) integrasi Freighter signing — pilih saja.
 
 Built with ❤️ on **Stellar Soroban** · Submission for Workshop Blockchain 2026
 

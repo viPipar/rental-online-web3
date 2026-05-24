@@ -1,0 +1,137 @@
+.rental-tracker {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  padding: 8px 0;
+  position: relative;
+}
+
+.tracker-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+/* Connector line */
+.tracker-line {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  right: -50%;
+  height: 2px;
+  background: var(--bg-elevated);
+  z-index: 0;
+  transition: background var(--transition-slow);
+}
+
+.tracker-line.done {
+  background: var(--gradient-brand);
+}
+
+/* Icon */
+.tracker-icon-wrap {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 8px;
+}
+
+.tracker-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: rgba(139,92,246,0.25);
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.tracker-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-elevated);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  transition: all var(--transition-normal);
+}
+
+.tracker-step.done .tracker-icon {
+  background: var(--gradient-brand);
+  border-color: var(--purple-500);
+  color: white;
+  box-shadow: 0 0 12px rgba(124,58,237,0.4);
+}
+
+.tracker-step.current .tracker-icon {
+  background: var(--gradient-brand);
+  border-color: var(--purple-400);
+  color: white;
+  box-shadow: 0 0 20px rgba(124,58,237,0.6);
+}
+
+/* Label */
+.tracker-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.tracker-label-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color var(--transition-normal);
+}
+
+.tracker-step.done .tracker-label-title,
+.tracker-step.current .tracker-label-title {
+  color: var(--text-primary);
+}
+
+.tracker-step.current .tracker-label-title {
+  color: var(--purple-400);
+}
+
+.tracker-label-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  max-width: 120px;
+  line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+  .rental-tracker {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .tracker-step {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+    flex: none;
+    width: 100%;
+  }
+
+  .tracker-line {
+    display: none;
+  }
+
+  .tracker-label {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .tracker-label-desc { max-width: 100%; }
+}

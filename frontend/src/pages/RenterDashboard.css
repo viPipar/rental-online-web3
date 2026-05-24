@@ -1,0 +1,231 @@
+.renter-page {
+  min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.renter-container {
+  padding-top: 88px;
+  padding-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header */
+.renter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.renter-title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.renter-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.text-green { color: var(--green-400); }
+.text-muted { color: var(--text-muted); }
+
+/* Tabs */
+.renter-tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 6px;
+  width: fit-content;
+}
+
+.renter-tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.renter-tab:hover {
+  color: var(--text-primary);
+  background: rgba(255,255,255,0.04);
+}
+
+.renter-tab.active {
+  background: var(--gradient-brand);
+  color: white;
+  box-shadow: 0 3px 12px rgba(124,58,237,0.4);
+}
+
+.tab-badge {
+  background: rgba(255,255,255,0.25);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  min-width: 18px;
+  text-align: center;
+}
+
+.renter-tab:not(.active) .tab-badge {
+  background: rgba(124,58,237,0.2);
+  color: var(--purple-400);
+}
+
+/* Items Grid */
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 80px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.empty-state h3 {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.empty-state p {
+  font-size: 0.875rem;
+}
+
+/* Rentals List */
+.rentals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rental-card {
+  overflow: hidden;
+}
+
+.rental-card-header {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  align-items: flex-start;
+}
+
+.rental-card-img-wrap {
+  flex-shrink: 0;
+}
+
+.rental-card-img {
+  width: 110px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+
+.rental-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rental-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rental-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.rental-meta-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.rental-cost-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.rental-cost-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cost-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.cost-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.cost-collateral {
+  color: var(--amber-400);
+}
+
+/* Tracker section inside rental card */
+.rental-tracker-wrap {
+  padding: 16px 20px;
+  border-top: 1px solid var(--glass-border);
+  background: rgba(255,255,255,0.01);
+}
+
+.rental-tracker-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.rental-completed-notice {
+  padding: 12px 20px;
+  border-top: 1px solid var(--glass-border);
+  font-size: 0.85rem;
+  color: var(--green-400);
+  background: rgba(16,185,129,0.06);
+}
+
+@media (max-width: 768px) {
+  .rental-card-header { flex-direction: column; }
+  .rental-card-img-wrap { width: 100%; }
+  .rental-card-img { width: 100%; height: 160px; }
+  .renter-tabs { width: 100%; overflow-x: auto; }
+}
