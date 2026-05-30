@@ -14,7 +14,7 @@
 
 [![Soroban SDK](https://img.shields.io/badge/Soroban_SDK-v25.0-%237b2cbf?style=for-the-badge&logo=stellar&logoColor=white)](https://stellar.org/)
 [![Rust](https://img.shields.io/badge/Rust-1.85+-000000?style=for-the-badge&logo=rust&logoColor=white)](https://www.rust-lang.org/)
-[![Network](https://img.shields.io/badge/Network-Stellar_Testnet-3498db?style=for-the-badge&logo=stellar&logoColor=white)](https://laboratory.stellar.org/)
+[![Network](https://img.shields.io/badge/Network-Stellar_Mainnet-27ae60?style=for-the-badge&logo=stellar&logoColor=white)](https://laboratory.stellar.org/)
 [![Build](https://img.shields.io/badge/Build-✅_Passing-27ae60?style=for-the-badge)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-f39c12?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
@@ -43,16 +43,16 @@ Every listing stores immutable geospatial coordinates **(Latitude & Longitude)**
 
 ## 🚀 Live Deployment
 
-The smart contract is officially compiled, signed, and deployed on the **Stellar Testnet**:
+The smart contract is officially compiled, signed, and deployed on the **Stellar Mainnet**:
 
 ```
-Contract ID : CCCVEAEEOILMBIPSWEG6UTKBADRT6TTB2J2726V7WKRJ44OJHSGPLTLF
-Network     : Stellar Testnet
+Contract ID : CA6EISAZU2O5NH3I66YRT5NEKPSCIF4OEHSGWMXOJ2KXUBN5VVJCT2F6
+Network     : Stellar Mainnet
 SDK Version : Soroban SDK v25.0
 Language    : Rust (no_std)
 ```
 
-> 🌐 **Inspect Live:** Load and interact with the contract instantly via the [Stellar Laboratory API Explorer →](https://laboratory.stellar.org/#contract-explorer?network=testnet&contractId=CCCVEAEEOILMBIPSWEG6UTKBADRT6TTB2J2726V7WKRJ44OJHSGPLTLF)
+> 🌐 **Inspect Live:** Load and interact with the contract instantly via the [Stellar Laboratory API Explorer →](https://laboratory.stellar.org/#contract-explorer?network=public&contractId=CA6EISAZU2O5NH3I66YRT5NEKPSCIF4OEHSGWMXOJ2KXUBN5VVJCT2F6)
 
 ---
 
@@ -234,7 +234,7 @@ rentown-soroban-contract/
 
 ## Ringkasan Singkat
 
-RentOwn — Decentralized P2P rental built around a Soroban smart contract (deployed on Stellar testnet).
+RentOwn — Decentralized P2P rental built around a Soroban smart contract (deployed on Stellar mainnet).
 
 Frontend saat ini: React + Vite full UI, peta (react-leaflet), dan alur sewa end-to-end yang menggunakan sebuah scaffold kontrak mock yang persisten (localStorage). Tujuan: siap diganti ke on-chain Soroban tanpa mengubah UI.
 
