@@ -1,6 +1,8 @@
 // ============================================================
-// MOCK DATA — Simulasi data dari Stellar Soroban smart contract
-// Contract ID: CCCVEAEEOILMBIPSWEG6UTKBADRT6TTB2J2726V7WKRJ44OJHSGPLTLF
+// MOCK DATA — Simulasi / Fallback data dari Stellar Soroban smart contract
+// Contract ID (Mainnet): CA6EISAZU2O5NH3I66YRT5NEKPSCIF4OEHSGWMXOJ2KXUBN5VVJCT2F6
+// Contract ID (Testnet): CCCVEAEEOILMBIPSWEG6UTKBADRT6TTB2J2726V7WKRJ44OJHSGPLTLF
+// Konfigurasi network aktif: lihat frontend/src/lib/config.js
 // ============================================================
 
 export const CATEGORIES = [

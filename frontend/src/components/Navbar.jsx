@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Wallet, Zap, Home } from 'lucide-react';
 import WalletButton from './WalletButton';
+import { NETWORK } from '../lib/config';
 import './Navbar.css';
 
 export default function Navbar() {
@@ -17,7 +18,7 @@ export default function Navbar() {
             <Zap size={18} />
           </div>
           <span className="navbar-logo-text">RentOwn</span>
-          <span className="navbar-logo-badge">Testnet</span>
+          <span className="navbar-logo-badge">{NETWORK.shortLabel}</span>
         </Link>
 
         {/* Center tabs (only on dashboard pages) */}

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Package, Search, Shield, Zap, ArrowRight, Star, Users, TrendingUp } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { NETWORK, shortContractId } from '../lib/config';
 import './LandingPage.css';
 
 const STATS = [
@@ -56,7 +57,7 @@ export default function LandingPage() {
       <section className="hero container">
         <div className="hero-badge anim-fade-up">
           <Zap size={12} />
-          <span>Live di Stellar Testnet · Contract ID: CCCVEAE...LTLF</span>
+          <span>Live di {NETWORK.label} · Contract ID: {shortContractId}</span>
         </div>
 
         <h1 className="hero-title anim-fade-up-delay-1">
@@ -175,12 +176,13 @@ export default function LandingPage() {
         <p className="footer-text">
           Built on Stellar Soroban · Contract{' '}
           <a
-            href="https://laboratory.stellar.org/"
+            href={`${NETWORK.explorerUrl}/contract/${NETWORK.contractId}`}
             target="_blank"
             rel="noopener noreferrer"
             className="footer-link"
+            title={NETWORK.contractId}
           >
-            CCCVEAEEOILMBIPSWEG6UTKBADRT6TTB2J2726V7WKRJ44OJHSGPLTLF
+            {NETWORK.contractId}
           </a>
         </p>
       </footer>

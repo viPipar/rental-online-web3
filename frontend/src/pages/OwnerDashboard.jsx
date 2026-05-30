@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar';
 import ItemForm from '../components/ItemForm';
 import { formatIDR, getStatusLabel } from '../data/mockItems';
 import { getMyListings, getMyRentals } from '../lib/contract';
+import { NETWORK, shortContractId } from '../lib/config';
+import { useWallet } from '../hooks/useWallet';
 import './OwnerDashboard.css';
 
 const TABS = [
@@ -21,6 +23,7 @@ const STATS = [
 ];
 
 export default function OwnerDashboard() {
+  const { address, shortAddress } = useWallet();
   const [tab, setTab] = useState('listings');
   const [items, setItems] = useState([]);
   const [completed, setCompleted] = useState([]);
@@ -32,8 +35,8 @@ export default function OwnerDashboard() {
     (async () => {
       setLoading(true);
       try {
-        const myItems = await getMyListings();
-        const myRentals = await getMyRentals();
+        const myItems = await getMyListings(address);
+        const myRentals = await getMyRentals(address);
         if (mounted) {
           setItems(myItems);
           setOwnerRentals(myRentals);
@@ -45,7 +48,7 @@ export default function OwnerDashboard() {
       }
     })();
     return () => { mounted = false };
-  }, []);
+  }, [address]); // re-load saat wallet berubah
 
   const handleAddItem = (newItem) => {
     setItems((prev) => [
@@ -53,8 +56,8 @@ export default function OwnerDashboard() {
       {
         ...newItem,
         id: newItem.id || Date.now(),
-        owner: 'GSTLR_YOU_OWNER_001',
-        ownerName: 'Kamu',
+        owner: address || 'unknown',
+        ownerName: shortAddress || 'Kamu',
         isAvailable: true,
         rating: 0,
         reviewCount: 0,
@@ -78,7 +81,7 @@ export default function OwnerDashboard() {
           <div className="owner-profile">
             <div className="owner-avatar">🏠</div>
             <div>
-              <p className="owner-name">Kamu (Demo)</p>
+              <p className="owner-name">{shortAddress ?? 'Belum Connect'}</p>
               <p className="owner-role">Pemilik Barang</p>
             </div>
           </div>
@@ -102,8 +105,16 @@ export default function OwnerDashboard() {
 
           <div className="sidebar-contract">
             <p className="sidebar-contract-label">Contract</p>
-            <code className="sidebar-contract-id">CCCVEAE...LTLF</code>
-            <p className="sidebar-network">Stellar Testnet</p>
+            <a
+              href={`${NETWORK.explorerUrl}/contract/${NETWORK.contractId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={NETWORK.contractId}
+              className="sidebar-contract-id"
+            >
+              {shortContractId}
+            </a>
+            <p className="sidebar-network">{NETWORK.label}</p>
           </div>
         </aside>
 

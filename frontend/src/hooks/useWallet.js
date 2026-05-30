@@ -1,34 +1,79 @@
 import { useState, useCallback } from 'react';
+import {
+  isConnected as freighterIsConnected,
+  getAddress as freighterGetAddress,
+  setAllowed as freighterSetAllowed,
+  signTransaction as freighterSignTransaction,
+} from '@stellar/freighter-api';
+import { NETWORK } from '../lib/config';
 
-// Stub untuk Stellar Freighter Wallet
-// Siap untuk diganti dengan integrasi @stellar/freighter-api nyata
+// ============================================================
+// useWallet — Integrasi Freighter Wallet v6 (Stellar)
+// ============================================================
+
+/** Validasi bahwa string adalah Stellar public key (dimulai G, panjang 56) */
+function isValidStellarAddress(addr) {
+  return typeof addr === 'string' && addr.startsWith('G') && addr.length === 56;
+}
+
+/** Baca address dari localStorage, hanya jika valid */
+function readStoredAddress() {
+  try {
+    const stored = window.localStorage.getItem('rentown_address');
+    return isValidStellarAddress(stored) ? stored : null;
+  } catch {
+    return null;
+  }
+}
+
 export function useWallet() {
-  const [address, setAddress] = useState(() => window.localStorage.getItem('rentown_address'));
+  const [address, setAddress] = useState(readStoredAddress);
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState(null);
 
   const connect = useCallback(async () => {
     setIsConnecting(true);
     setError(null);
+
+    // Bersihkan localStorage yang mungkin berisi value rusak
+    try { window.localStorage.removeItem('rentown_address'); } catch {}
+
     try {
-      // Prefer Freighter if available
-      if (window.freighter && typeof window.freighter.getPublicKey === 'function') {
-        // Some Freighter integrations require a connect call first
-        if (typeof window.freighter.connect === 'function') {
-          try { await window.freighter.connect(); } catch (e) { /* ignore connect errors */ }
-        }
-        const result = await window.freighter.getPublicKey();
-        setAddress(result);
-        window.localStorage.setItem('rentown_address', result);
-      } else {
-        // Demo fallback
-        await new Promise((r) => setTimeout(r, 600));
-        const demo = 'GDEMO123RENTOWN456WALLET789STELLAR';
-        setAddress(demo);
-        window.localStorage.setItem('rentown_address', demo);
+      // 1. Cek apakah ekstensi Freighter terinstall
+      const connectionStatus = await freighterIsConnected();
+      // freighter-api v6: mengembalikan { isConnected: boolean }
+      const installed = connectionStatus?.isConnected ?? false;
+
+      if (!installed) {
+        throw new Error(
+          'Freighter wallet tidak terdeteksi. Pastikan ekstensi Freighter sudah diinstall dan diaktifkan di browser.'
+        );
       }
+
+      // 2. Minta izin akses ke wallet user (popup Freighter akan muncul)
+      await freighterSetAllowed();
+
+      // 3. Ambil alamat wallet
+      const result = await freighterGetAddress();
+      // freighter-api v6: { address: string, error?: string }
+      if (result?.error) {
+        throw new Error(`Freighter: ${result.error}`);
+      }
+
+      const addr = result?.address;
+      if (!isValidStellarAddress(addr)) {
+        throw new Error(
+          'Tidak bisa mendapatkan alamat wallet yang valid. Pastikan Freighter tidak dikunci dan sudah login.'
+        );
+      }
+
+      setAddress(addr);
+      window.localStorage.setItem('rentown_address', addr);
     } catch (err) {
-      setError(err?.message || 'Gagal menghubungkan wallet');
+      const msg = err?.message || 'Gagal menghubungkan wallet';
+      setError(msg);
+      setAddress(null);
+      console.error('[useWallet] connect error:', err);
     } finally {
       setIsConnecting(false);
     }
@@ -37,18 +82,30 @@ export function useWallet() {
   const disconnect = useCallback(() => {
     setAddress(null);
     setError(null);
-    window.localStorage.removeItem('rentown_address');
+    try { window.localStorage.removeItem('rentown_address'); } catch {}
   }, []);
 
-  // Helper to request signing a transaction via Freighter if available
+  /**
+   * Tandatangani transaksi XDR menggunakan Freighter v6.
+   * @param {string} txXdr - Transaction XDR (base64)
+   * @returns {Promise<string>} - Signed XDR (base64)
+   */
   const signTransaction = useCallback(async (txXdr) => {
-    if (window.freighter && typeof window.freighter.signTransaction === 'function') {
-      return await window.freighter.signTransaction(txXdr);
+    const result = await freighterSignTransaction(txXdr, {
+      networkPassphrase: NETWORK.networkPassphrase,
+    });
+    // freighter-api v6: { signedTxXdr: string, error?: string }
+    if (result?.error) {
+      throw new Error(`Freighter signing error: ${result.error}`);
     }
-    throw new Error('Freighter tidak tersedia untuk menandatangani transaksi');
+    const signedXdr = result?.signedTxXdr;
+    if (!signedXdr) {
+      throw new Error('Freighter tidak mengembalikan signed transaction');
+    }
+    return signedXdr;
   }, []);
 
-  const shortAddress = address
+  const shortAddress = isValidStellarAddress(address)
     ? `${address.slice(0, 6)}...${address.slice(-4)}`
     : null;
 
